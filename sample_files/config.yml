@@ -1,0 +1,14 @@
+SchemaRegistry:
+  Host: https://abc-123.us-east-2.aws.confluent.cloud
+  CredentialsSecret: /some/aws/secret
+  CredentialsSecretRegion: us-east-2
+  SchemaId: 123
+DecodedEventFile: sample_files/full-decoded-event.json
+EncodedEventFile: sample_files/output.json
+Console: false
+Verbose: false
+BatchSize: 1
+Lambda:
+  Name: consumer-lambda-function-name
+  Region: us-east-2
+  LogFile: sample_files/lambda-logs.json

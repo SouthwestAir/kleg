@@ -1,0 +1,20 @@
+{
+  "eventSource": "SelfManagedKafka",
+  "bootstrapServers": "abc-xyz.us-east-2.aws.glb.confluent.cloud:9092",
+  "records": {
+    "topic.name-1": [
+      {
+        "topic": "topic.name",
+        "partition": 1,
+        "offset": 18439859,
+        "timestamp": 1710595027500,
+        "timestampType": "CREATE_TIME",
+        "key": "message_key",
+        "value": {
+          "some_field": "message_value"
+        },
+        "headers": [{ "message_id": "c7b39891-97e7-45ac-8d87-b9fc12b500a0" }]
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "eventSource": "SelfManagedKafka",
+  "bootstrapServers": "abc-xyz.us-east-2.aws.glb.confluent.cloud:9092",
+  "records": {
+    "topic.name-1": [
+      {
+        "topic": "topic.name",
+        "partition": 1,
+        "offset": 18439859,
+        "timestamp": 1710595027500,
+        "timestampType": "CREATE_TIME",
+        "key": "RjAyNHLzMTZ3V058NLQ0NXxQLFh1",
+        "value": "AAABh+kEV04GUEAAAAg==",
+        "headers": [
+          {
+            "message_id": [
+              99, 55, 98, 51, 57, 56, 57, 56, 45, 57, 55, 101, 55, 45, 52, 53,
+              97, 99, 45, 56, 100, 56, 55, 45, 98, 57, 102, 100, 49, 50, 98, 53,
+              48, 48, 97, 48
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
