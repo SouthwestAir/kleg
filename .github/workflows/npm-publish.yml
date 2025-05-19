@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - test
-  release:
-    types: [created]
 jobs:
   build:
     runs-on: ubuntu-latest
