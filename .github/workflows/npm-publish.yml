@@ -1,10 +1,7 @@
 
 
 name: Publish to NPM
-on:
-  push:
-    branches:
-      - test
+on: [push, merge]
 jobs:
   build:
     runs-on: ubuntu-latest
