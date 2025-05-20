@@ -1,5 +1,5 @@
 {
-  "name": "kafka-lambda-event-generator",
+  "name": "@southwestair/kafka-lambda-event-generator",
   "version": "1.2.7",
   "description": "Tool for generating serialized, encoded Kafka messages that can be passed into lambda to mimic an event received from an Event Source Mapping.",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
     "kleg": "./dist/kleg.js"
   },
   "author": "Alec Rogers",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@types/node": "^20.10.4",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
