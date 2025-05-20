@@ -218,6 +218,19 @@ The `sample_files/full_decoded_event.json` file contains a working example of an
 
 Here are some potential **future features** for `kafka-lambda-event-generator (kleg)`:
 
+## Contributing
+
+To contribute to this package:
+
+1. Fork this repository
+1. Clone your fork to your computer
+1. Create a branch to work on
+1. Commit your code
+1. Create a pull request
+
+From: <https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project>
+
+
 ## 🚀 Future Ideas
 
 Here are some ideas for future enhancements of this project:
