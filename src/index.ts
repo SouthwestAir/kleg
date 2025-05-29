@@ -40,13 +40,8 @@ export class KafkaLambdaEventGenerator {
    * @throws Errors if all required fields are not provided or if event cannot be
    * generated.
    */
-  public async generate(
-    config: GenerateCommandConfig
-  ): Promise<Partial<KafkaEvent>> {
-    const missingFields = validateObjectFields(
-      config,
-      generateCommandRequiredFields
-    );
+  public async generate(config: GenerateCommandConfig): Promise<Partial<KafkaEvent>> {
+    const missingFields = validateObjectFields(config, generateCommandRequiredFields);
 
     if (missingFields.length > 0) {
       const errorMsg = `Missing config fields required to generate event`;
@@ -78,11 +73,7 @@ export class KafkaLambdaEventGenerator {
           timestampType: msg.timestampType,
           key: msg.key ? Buffer.from(msg.key).toString('base64') : undefined,
           value: msg.value
-            ? await encodeValue(
-                KafkaLambdaEventGenerator.registry,
-                msg.value,
-                config
-              )
+            ? await encodeValue(KafkaLambdaEventGenerator.registry, msg.value, config)
             : undefined,
           headers: msg.headers ? encodeHeaders(msg.headers) : undefined,
         });
@@ -109,13 +100,8 @@ export class KafkaLambdaEventGenerator {
    * @throws Errors if all required fields are not provided or if lambda
    * cannot be invoked.
    */
-  public async invoke(
-    config: InvokeCommandConfig
-  ): Promise<string | undefined> {
-    const missingFields = validateObjectFields(
-      config,
-      invokeCommandRequiredFields
-    );
+  public async invoke(config: InvokeCommandConfig): Promise<string | undefined> {
+    const missingFields = validateObjectFields(config, invokeCommandRequiredFields);
 
     if (missingFields.length > 0) {
       const errorMsg = `Missing config fields required to invoke lambda`;

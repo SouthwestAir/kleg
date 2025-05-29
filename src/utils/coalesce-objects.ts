@@ -1,7 +1,4 @@
-export function coalesceObjects<T extends object>(
-  primaryObj: T,
-  secondaryObj: T
-): T {
+export function coalesceObjects<T extends object>(primaryObj: T, secondaryObj: T): T {
   const entries = Object.entries(secondaryObj) as [keyof T, T[keyof T]][];
   const coalescedObj = { ...primaryObj };
 

@@ -1,7 +1,4 @@
-import {
-  SecretsManager,
-  GetSecretValueCommand,
-} from '@aws-sdk/client-secrets-manager';
+import { SecretsManager, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { Logger } from '@aws-lambda-powertools/logger';
 
 import { LoggerHelper } from '.';

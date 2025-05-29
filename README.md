@@ -1,9 +1,7 @@
-# kafka-lambda-event-generator
+# Kafka Lambda Event Generator (kleg)
 
-
-[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) 
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo= TypeScript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 ## 💡 Concept
 
@@ -23,17 +21,10 @@ There are multiple ways to run kleg. For most projects, the recommended approach
 
 ### Install To Project From npm
 
-To install kleg into your project, add an `.npmrc` file containing the following:
-
-```conf
-registry=https://nexus-tools.swacorp.com/repository/all-npm
-strict-ssl=false
-```
-
-Then install kleg with:
+To install kleg into your project, run:
 
 ```bash
-npm install kafka-lambda-event-generator
+npm install @SouthwestAir/kleg
 ```
 
 You can now invoke it manually with:
@@ -45,26 +36,26 @@ npx kleg ...
 Or import it into a project file by adding:
 
 ```ts
-import { KafkaLambdaEventGenerator } from 'kafka-lambda-event-generator';
+import { KafkaLambdaEventGenerator } from '@SouthwestAir/kleg';
 ```
 
 ### Run With Docker
 
 Kleg can also be run inside a Docker container, giving it the flexibility to easily integrate with other testing frameworks or with non-Node.js projects.
 
-To run in Docker, ensure that Docker is installed and running on the host machine. Next, add the [sample Dockerfile](https://gitlab-tools.swacorp.com/csr/apps/kafka-lambda-event-generator/-/blob/master/docker/Dockerfile?ref_type=heads) to your repository. Then, to build the Docker Image, run:
+To run in Docker, ensure that Docker is installed and running on the host machine. Next, add the [sample Dockerfile](https://github.com/SouthwestAir/kleg/blob/main/docker/Dockerfile) to your repository. Then, to build the Docker Image, run:
 
 ```bash
 docker build -t kleg ./docker
 ```
 
-The container can now be run using `docker run kleg <kleg args>`. You must provide the Docker container with active AWS credentials, a kleg config file, and an input file in order for it to run. There are several approaches for doing this with Docker. The simplest is to pass in AWS credentials as environment variables (retrieved using awssaml) and mount the directory containing the config and input files. This can be done with the following command:
+The container can now be run using `docker run kleg <kleg args>`. You must provide the Docker container with active AWS credentials, a kleg config file, and an input file in order for it to run. There are several approaches for doing this with Docker. The simplest is to pass in AWS credentials as environment variables and mount the directory containing the config and input files. This can be done with the following command:
 
 ```bash
 docker run \
-  -e AWS_ACCESS_KEY_ID=$(awssaml credential-value-active --key AccessKeyId) \
-  -e AWS_SECRET_ACCESS_KEY=$(awssaml credential-value-active --key SecretAccessKey) \
-  -e AWS_SESSION_TOKEN=$(awssaml credential-value-active --key SessionToken) \
+  -e AWS_ACCESS_KEY_ID=<AccessKeyId> \
+  -e AWS_SECRET_ACCESS_KEY=<SecretAccessKey> \
+  -e AWS_SESSION_TOKEN=<SessionToken> \
   -e AWS_DEFAULT_REGION=us-east-1 \
   --mount type=bind,source=./docker,target=/app \
   kleg <args>
@@ -78,16 +69,14 @@ Another way of passing in AWS credentials is by providing Docker with access to 
 docker run -v ~/.aws:/root/.aws kleg <args>
 ```
 
-This command mounts your local `~/.aws/` directory to the container's `~/.aws` directory. The AWS SDK will automatically check this location when looking for credentials. Using this method requires that you have active credentials in your `~/.aws/credentials` file, and that they are either named `default` or that they are listed under the same profile specified in your `~/.aws/config` file. This can be done with awssaml by starting a session with the correct credentials and running `awssaml populate-aws-credentials --aws-profile default`.
-
-Visit the [awssaml documentation](https://docs.awssaml.ec.dev.aws.swacorp.com/working_with_docker.html) for more information on passing AWS credentials into a Docker container.
+This command mounts your local `~/.aws/` directory to the container's `~/.aws` directory. The AWS SDK will automatically check this location when looking for credentials. Using this method requires that you have active credentials in your `~/.aws/credentials` file, and that they are either named `default` or that they are listed under the same profile specified in your `~/.aws/config` file.
 
 ### Install Globally With npm
 
 To install globally, run the following command:
 
 ```bash
-npm install -g --registry=https://nexus-tools.swacorp.com/repository/all-npm --strict-ssl=false kafka-lambda-event-generator
+npm install -g @SouthwestAir/kleg
 ```
 
 This will set up a symlink so that you can run `kleg` from anywhere. This is the easiest approach to get kleg up and running, but doesn't add it to your project, meaning other teammates will have to manually install kleg too rather than it being added automatically when other project dependencies are installed.
@@ -230,73 +219,86 @@ To contribute to this package:
 
 From: <https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project>
 
-
 ## 🚀 Future Ideas
 
 Here are some ideas for future enhancements of this project:
 
-1. **Multi-Topic Event Generation**  
+1. **Multi-Topic Event Generation**
+
    - Allow kleg to generate and encode events across multiple Kafka topics simultaneously (useful for applications consuming events from different producers).
 
-2. **Plugin System for Custom Serializers**  
-   - Enable users to define custom serialization formats beyond Avro (e.g., JSON Schema, Protobuf).  
+2. **Plugin System for Custom Serializers**
+
+   - Enable users to define custom serialization formats beyond Avro (e.g., JSON Schema, Protobuf).
    - Provide an easy way to add and configure new serialization methods.
 
-3. **Direct Kafka Publishing Mode**  
+3. **Direct Kafka Publishing Mode**
+
    - Instead of only generating events for Lambda invocation, allow kleg to publish the encoded event directly to a Kafka topic (would require proper authentication and producer permissions).
 
-4. **Automated Schema Detection**  
-   - Auto-fetch Avro schemas from Confluent Schema Registry based on the topic name.  
+4. **Automated Schema Detection**
+
+   - Auto-fetch Avro schemas from Confluent Schema Registry based on the topic name.
    - Reduce the need for manually specifying Schema IDs.
 
-5. **Cloud Provider Agnostic Mode**  
+5. **Cloud Provider Agnostic Mode**
+
    - Extend support for **Azure Event Hubs** and **Google Pub/Sub**, making it adaptable beyond AWS Kafka.
 
-6. **Event Mutation & Replay**  
-   - Allow modifying existing Kafka events with partial updates before re-encoding.  
+6. **Event Mutation & Replay**
+
+   - Allow modifying existing Kafka events with partial updates before re-encoding.
    - Replay past events with new transformations.
 
-7. **Debug Mode with Step-by-Step Logging**  
-   - Introduce a verbose debugging mode that logs each transformation step (deserialization → encoding → event output).  
+7. **Debug Mode with Step-by-Step Logging**
+
+   - Introduce a verbose debugging mode that logs each transformation step (deserialization → encoding → event output).
    - Helps diagnose encoding issues.
 
-8. **Event Chaining & Workflows**  
-   - Chain multiple events together in a test workflow (e.g., simulate a series of events in a stream).  
+8. **Event Chaining & Workflows**
+
+   - Chain multiple events together in a test workflow (e.g., simulate a series of events in a stream).
    - Useful for integration testing complex event-driven systems.
 
-9. **Scheduled & Batch Event Execution**  
-   - Introduce a scheduling feature to send batches of generated events at predefined intervals.  
+9. **Scheduled & Batch Event Execution**
+
+   - Introduce a scheduling feature to send batches of generated events at predefined intervals.
    - Mimic real-world Kafka producer behavior.
 
-10. **Web-Based UI for Interactive Testing**  
-    - Provide a simple web-based front end to configure and generate Kafka events.  
+10. **Web-Based UI for Interactive Testing**
+
+    - Provide a simple web-based front end to configure and generate Kafka events.
     - Users can define schemas, input data, and test directly from a browser.
 
-11. **kleg API Mode**  
-    - Expose kleg as a REST or GraphQL API, allowing external services to request event generation and Lambda invocation.  
+11. **kleg API Mode**
+
+    - Expose kleg as a REST or GraphQL API, allowing external services to request event generation and Lambda invocation.
     - Enables better integration with CI/CD pipelines.
 
-12. **Support for Consumer Offsets & Checkpointing**  
-    - Simulate real-world consumer behavior by allowing generated events to respect partition offsets.  
+12. **Support for Consumer Offsets & Checkpointing**
+
+    - Simulate real-world consumer behavior by allowing generated events to respect partition offsets.
     - Useful for end-to-end testing of consumer recovery scenarios.
 
-13. **Visualization of Events & Payloads**  
-    - A dashboard to inspect raw vs. encoded event structures side by side.  
+13. **Visualization of Events & Payloads**
+
+    - A dashboard to inspect raw vs. encoded event structures side by side.
     - Helps developers better understand transformations.
 
-14. **Terraform & Infrastructure as Code (IaC) Support**  
+14. **Terraform & Infrastructure as Code (IaC) Support**
+
     - Provide Terraform modules for automated deployment and integration into AWS Lambda-based event-driven architectures.
 
-15. **Mobile App Integration**  
+15. **Mobile App Integration**
     - Develop an API that allows on-the-go event generation from mobile devices, useful for quick debugging in production environments.
 
 ## 💻 Contributors
 
 The following members of Southwest Technology contributed to this project:
 
-| ![Alec Rogers](screenshots/avatar_alec_rogers.png) |
-| :---: | 
-| Alec Rogers  |
+|                                                       ![Alec Rogers](screenshots/avatar_alec_rogers.png)                                                        |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                           Alec Rogers                                                                           |
 | [![alec-rogers](https://raster.shields.io/badge/linkedin-%40alecprogers-lightblue?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/alecprogers/) |
 
 ## 📖 Citations
@@ -305,10 +307,10 @@ If you use this software, please cite it using the following metadata:
 
 ```
 @software {
-	title = {kafka-lambda-event-generator},
+	title = {kleg},
 	author = {Technology},
 	affiliation = {Southwest Airlines},
-	url = {https://github.com/SouthwestAir/kafka-lambda-event-generator},
+	url = {https://github.com/SouthwestAir/kleg},
 	month = {03},
 	year = {2025},
 	license: {BSD-3-Clause}
