@@ -5,10 +5,7 @@ import YAML from 'yaml';
 import { LoggerHelper } from '../libs';
 import { AppConfig } from '../models/app-config.interface';
 
-export function parseConfigFile(
-  configFilePath: string,
-  defaultPath: string
-): Partial<AppConfig> {
+export function parseConfigFile(configFilePath: string, defaultPath: string): Partial<AppConfig> {
   const logger = LoggerHelper.getLogger();
   let file: string | undefined;
   let error: Error | undefined;
@@ -21,12 +18,9 @@ export function parseConfigFile(
 
   if (file === undefined) {
     try {
-      file = fs.readFileSync(
-        path.join(`.`, `kleg`, `${configFilePath}`),
-        'utf8'
-      );
+      file = fs.readFileSync(path.join(`.`, `kleg`, `${configFilePath}`), 'utf8');
     } catch {
-      null;
+      /* empty */
     }
   }
 
@@ -47,10 +41,8 @@ export function parseConfigFile(
 
   return {
     schemaRegistryHost: fileConfig.SchemaRegistry.Host,
-    schemaRegistryCredentialsSecret:
-      fileConfig.SchemaRegistry.CredentialsSecret,
-    schemaRegistryCredentialsSecretRegion:
-      fileConfig.SchemaRegistry.CredentialsSecretRegion,
+    schemaRegistryCredentialsSecret: fileConfig.SchemaRegistry.CredentialsSecret,
+    schemaRegistryCredentialsSecretRegion: fileConfig.SchemaRegistry.CredentialsSecretRegion,
     schemaId: fileConfig.SchemaRegistry.SchemaId,
     decodedEventFile: fileConfig.DecodedEventFile,
     encodedEventFile: fileConfig.EncodedEventFile,

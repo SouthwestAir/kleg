@@ -5,7 +5,7 @@ import { Command } from 'commander';
 import { LoggerHelper } from './libs';
 
 // Changing this to an ES6 import causes the package.json to be double-bundled in the build
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const pkg = require('../package.json');
 
 import {
@@ -50,26 +50,13 @@ program.version(pkg.version).description(pkg.description);
 
 // Define CLI options
 program
-  .option(
-    '-f, --config-file <value>',
-    'Path to config file',
-    DEFAULTS.CONFIG_FILE
-  )
+  .option('-f, --config-file <value>', 'Path to config file', DEFAULTS.CONFIG_FILE)
   .option('-c, --console', 'Write output to console')
   .option('-v, --verbose', 'Enable debug logs')
-  .option(
-    '-d, --decoded-event-file <value>',
-    'Path to input file with decoded event'
-  )
-  .option(
-    '-e, --encoded-event-file <value>',
-    'Path of file to which to write encoded event'
-  )
+  .option('-d, --decoded-event-file <value>', 'Path to input file with decoded event')
+  .option('-e, --encoded-event-file <value>', 'Path of file to which to write encoded event')
   .option('-l, --lambda-log-file <value>', 'Name of lambda log output file')
-  .option(
-    '-b, --batch-size <value>',
-    'Number of copies of Kafka message(s) to insert into event'
-  )
+  .option('-b, --batch-size <value>', 'Number of copies of Kafka message(s) to insert into event')
   .parse(process.argv);
 
 // Default command
@@ -110,21 +97,16 @@ async function main(command: CliCommand) {
 
   logger.info('Retrieved config from CLI and config file', appConfig);
 
-  const commandConfig: Partial<GenerateCommandConfig & InvokeCommandConfig> =
-    appConfig;
+  const commandConfig: Partial<GenerateCommandConfig & InvokeCommandConfig> = appConfig;
 
   // Parse input file with decoded event, if provided and command is not 'invoke'
   if (appConfig.decodedEventFile && command !== COMMANDS.INVOKE) {
-    commandConfig.decodedEvent = parseDecodedFile(
-      appConfig.decodedEventFile
-    ) as DecodedKafkaEvent;
+    commandConfig.decodedEvent = parseDecodedFile(appConfig.decodedEventFile) as DecodedKafkaEvent;
   }
 
   // Parse input file with encoded event, if provided and command is 'invoke'
   if (appConfig.encodedEventFile && command === COMMANDS.INVOKE) {
-    commandConfig.encodedEvent = parseEncodedFile(
-      appConfig.encodedEventFile
-    ) as KafkaEvent;
+    commandConfig.encodedEvent = parseEncodedFile(appConfig.encodedEventFile) as KafkaEvent;
   }
 
   const kleg = new KafkaLambdaEventGenerator();
@@ -136,27 +118,15 @@ async function main(command: CliCommand) {
         appConfig,
         commandConfig as GenerateCommandConfig
       );
-      handleInvokeCommand(
-        kleg,
-        appConfig,
-        commandConfig as InvokeCommandConfig
-      );
+      handleInvokeCommand(kleg, appConfig, commandConfig as InvokeCommandConfig);
       break;
 
     case COMMANDS.GENERATE:
-      handleGenerateCommand(
-        kleg,
-        appConfig,
-        commandConfig as GenerateCommandConfig
-      );
+      handleGenerateCommand(kleg, appConfig, commandConfig as GenerateCommandConfig);
       break;
 
     case COMMANDS.INVOKE:
-      handleInvokeCommand(
-        kleg,
-        appConfig,
-        commandConfig as InvokeCommandConfig
-      );
+      handleInvokeCommand(kleg, appConfig, commandConfig as InvokeCommandConfig);
       break;
 
     default:
@@ -170,9 +140,7 @@ async function handleGenerateCommand(
   commandConfig: GenerateCommandConfig
 ): Promise<KafkaEvent> {
   logger.debug('Calling Generate command', { commandConfig });
-  const encodedEvent = await kleg.generate(
-    commandConfig as GenerateCommandConfig
-  );
+  const encodedEvent = await kleg.generate(commandConfig as GenerateCommandConfig);
   const strEvent = JSON.stringify(encodedEvent);
 
   if (appConfig.console) {

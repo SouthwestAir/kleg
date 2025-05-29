@@ -1,11 +1,11 @@
 # Check README for info on running with Docker
-FROM node:20-alpine3.18
+FROM node:22-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Install kleg
-RUN npm install -g kafka-lambda-event-generator
+RUN npm install -g @SouthwestAir/kleg
 
 # Set kleg as entrypoint
-ENTRYPOINT ["node", "/usr/local/lib/node_modules/kafka-lambda-event-generator/dist/kleg.js"]
+ENTRYPOINT ["node", "/usr/local/lib/node_modules/kleg/dist/kleg.js"]

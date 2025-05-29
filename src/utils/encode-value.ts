@@ -16,8 +16,7 @@ export async function encodeValue(
     return serializedValue.toString('base64');
   } catch (error) {
     logger.error(
-      'Failed to serialize message. Are you sure the ' +
-        'input message matches the Avro schema?',
+      'Failed to serialize message. Are you sure the ' + 'input message matches the Avro schema?',
       error as Error
     );
     throw error;
