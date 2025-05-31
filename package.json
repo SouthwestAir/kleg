@@ -9,9 +9,11 @@
   "keywords": [
     "kafka",
     "lambda",
+    "testing",
     "event source mapping",
     "esm",
-    "kafka lambda event generator"
+    "kafka lambda event generator",
+    "kafka testing"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

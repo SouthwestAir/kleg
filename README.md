@@ -5,26 +5,30 @@
 
 ## 💡 Concept
 
-Kafka Lambda Event Generator (kleg) is a tool that takes in a decoded Kafka event and converts it to a fully encoded Kafka event that can be used to mimic a message received from Kafka via an Event Source Mapping.
+Kafka Lambda Event Generator (kleg) is a tool that takes in a decoded Kafka event and converts it to a fully encoded, serialized Kafka event that perfectly matches the format of events actually consumed via a Lambda Event Source Mapping.
 
 ## 📜 Background
 
-A current pain point for Kafka consumers is the inability to test consumer applications on-demand with custom events since consumers do not have permissions to produce to topics, even in dev environments. Testing required working with the producing team to request that they trigger their producer to send a message that matches what's needed for the specific test the consumer wants to run. This process is complicated by the fact that many producers do not have the ability to produce one-off messages containing specific data.
+A common pain point for devs who are building Kafka consumers is the inability to run ad hoc tests on their consumer with custom events. Since the Lambda is expecting messages to be encoded and serialized with Avro, a dev cannot simply create a test event by hand; the message actually needs to come from Kafka. But in many enterprise contexts, the team building the consumer does not have permissions to publish messages to the topic they are consuming, even in dev.
 
-Kleg resolves this issue for teams using Lambda Event Source Mappings by allowing them to generate events that exactly match those that actually come from Kafka. Simply give it a decoded JSON event and it will serialize it with Avro and encode it to the correct format. This output event can then be used to manually invoke the consumer lambda via the AWS console's Test functionality, or kleg can also be configured to invoke the lambda itself.
+One option is to send ad hoc requests to the publishing team to produce a message that fits the needed test case. Another common solution to this problem is for dev teams to provision their own Kafka topic for testing purposes, which they can publish messages to at any time. However, both of these approaches waste time and slow down devs, who should just be focused on the consumer application they're building.
 
-Kleg is available as both a CLI tool and an importable package. This means that devs can use it easily use it for a quick, one-off test, or it can be incorporated into a larger testing framework.
+Kleg solves this problem by allowing devs to generate test messages in the exact format as if they had actually come from Kafka. Just provide a sample JSON message and the schema required to serialize it, and Kleg will give you a valid Kafka event in the format expected by your consumer application. It'll even invoke your Lambda for you and spit out the logs. No more waiting for the producer team to reply to your messages begging them to trigger a test event!
+
+Combined with the ability for devs to quickly deploy a Lambda from their local machine, Kleg enables extremely short testing cycles where the dev can deploy their code and test it with any custom event in under a minute.
+
+Kleg is primarily used as a CLI tool, but is also an importable package. This allows it to be incorporated into broader testing frameworks.
 
 ## ⚙️ Installation
 
-There are multiple ways to run kleg. For most projects, the recommended approach is to install as a dependency from npm or to run with Docker. If you're looking to get started as quickly as possible for testing purposes, a global npm installation might be appropriate. If you want to make changes to kleg itself, then you can clone this repo and run it directly from the source. Cloning this repo is only necessary if you want to modify kleg.
+The recommended and most common way to use Kleg is to add it as a dev dependency in your consumer app repo. It can also be installed globally, run from source, or even run through a Docker container.
 
 ### Install To Project From npm
 
 To install kleg into your project, run:
 
 ```bash
-npm install @southwestair/kleg
+npm install --save-dev @southwestair/kleg
 ```
 
 You can now invoke it manually with:
@@ -97,14 +101,14 @@ npm run dev -- <args>
 
 ## 💻 CLI Usage
 
-Using kleg requires an active AWS CLI session. This is used to retrieve Schema Registry credentials from Secrets Manager and to invoke lambda functions. Kleg will only work in AWS accounts where you have the required permissions--typically this will only be dev accounts, unless you have BreakGlass access.
+Using kleg requires an active AWS CLI session. This is used to retrieve Schema Registry credentials from Secrets Manager and to invoke Lambda functions. Kleg will only work in AWS accounts where you have the required permissions--typically this will only be dev accounts, unless you have BreakGlass access.
 
 ### Commands
 
 Kleg offers three CLI commands:
 
 - `kleg generate`: Generates an encoded Kafka event
-- `kleg invoke`: Uses a previously-generated Kafka event to invoke a lambda
+- `kleg invoke`: Uses a previously-generated Kafka event to invoke a Lambda
 - `kleg` (default): Generates and invokes in one step
 
 The configuration values for each command are defined below. See the CLI Flags and Config File Values sections for specifics on how to set each value. If a value is set via CLI flags and the config file, the value from the CLI flag will be used.
@@ -137,12 +141,12 @@ Note: By default, kleg will check for both `./config.yml` and `./kleg/config.yml
 
 | Name               | Required | Default | Set in config file? | Set with CLI flag? | Description                                                  |
 | ------------------ | -------- | ------- | ------------------- | ------------------ | ------------------------------------------------------------ |
-| Encoded event file | Y\*      | -       | Y                   | Y                  | Path to encoded Kafka event file with which to invoke lambda |
-| Lambda name        | Y        | -       | Y                   | N                  | Name of lambda function to invoke                            |
-| Lambda region      | Y        | -       | Y                   | N                  | AWS region where lambda is located                           |
-| Lambda log file    | Y        | -       | Y                   | Y                  | Path to save file with up to 4 KB of lambda logs             |
+| Encoded event file | Y\*      | -       | Y                   | Y                  | Path to encoded Kafka event file with which to invoke Lambda |
+| Lambda name        | Y        | -       | Y                   | N                  | Name of Lambda function to invoke                            |
+| Lambda region      | Y        | -       | Y                   | N                  | AWS region where Lambda is located                           |
+| Lambda log file    | Y        | -       | Y                   | Y                  | Path to save file with up to 4 KB of Lambda logs             |
 
-\*This value is required if the `invoke` command is run by itself, but is not required if running the default command that both generates an encoded message and invokes the lambda.
+\*This value is required if the `invoke` command is run by itself, but is not required if running the default command that both generates an encoded message and invokes the Lambda.
 
 ### CLI Flags
 
@@ -184,9 +188,9 @@ repo for a working example of a config file.
 
 ### Decoded Kafka Event File
 
-The contents of this file should match the format of a lambda event with a decoded, deserialized Kafka message. If your consumer lambda logs the decoded Kafka message, you can obtain a sample there. Otherwise the producing team might have a sample available, or you can recreate one based on the Avro schema.
+The contents of this file should match the format of a Lambda event with a decoded, deserialized Kafka message. If your consumer Lambda logs the decoded Kafka message, you can obtain a sample there. Otherwise the producing team might have a sample available, or you can recreate one based on the Avro schema.
 
-The only actual requirement for the decoded event is that it matches the basic lambda event JSON structure and contains a Kafka message value that matches the Avro schema whose ID is provided. A pared-down version looks like this:
+The only actual requirement for the decoded event is that it matches the basic Lambda event JSON structure and contains a Kafka message value that matches the Avro schema whose ID is provided. A pared-down version looks like this:
 
 ```json
 {
