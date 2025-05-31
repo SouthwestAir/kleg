@@ -1,10 +1,10 @@
 SchemaRegistry:
-  Host: https://abc-123.us-east-2.aws.confluent.cloud
+  Host: https://abc-123.us-east-1.aws.confluent.cloud
   CredentialsSecret: /some/aws/secret
   CredentialsSecretRegion: us-east-2
   SchemaId: 123
-DecodedEventFile: sample_files/full-decoded-event.json
-EncodedEventFile: sample_files/output.json
+DecodedEventFile: sample_files/decoded-event.json
+EncodedEventFile: sample_files/encoded-event.json
 Console: false
 Verbose: false
 BatchSize: 1

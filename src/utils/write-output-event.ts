@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { LoggerHelper } from '../libs';
+import { LoggerHelper } from '../libs/index.js';
 
 export function writeFile(fileName: string, content: string): void {
   const logger = LoggerHelper.getLogger();

@@ -2,7 +2,7 @@ import { Logger } from '@aws-lambda-powertools/logger';
 import { SchemaRegistry } from '@kafkajs/confluent-schema-registry';
 import { InvokeCommand, LambdaClient, LogType } from '@aws-sdk/client-lambda';
 
-import { LoggerHelper } from './libs';
+import { LoggerHelper } from './libs/index.js';
 
 import {
   GenerateCommandConfig,
@@ -11,14 +11,14 @@ import {
   KafkaEvent,
   generateCommandRequiredFields,
   invokeCommandRequiredFields,
-} from './models';
+} from './models/index.js';
 import {
   getSchemaRegistryClient,
   encodeValue,
   encodeHeaders,
   multiplyArray,
   validateObjectFields,
-} from './utils';
+} from './utils/index.js';
 
 /**
  * @public

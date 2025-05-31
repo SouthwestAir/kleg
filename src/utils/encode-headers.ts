@@ -1,4 +1,4 @@
-import { DecodedKafkaHeaders, KafkaHeaders } from '../models/kafka-headers.interface';
+import { DecodedKafkaHeaders, KafkaHeaders } from '../models/index.js';
 
 export function encodeHeaders(headers: DecodedKafkaHeaders[]): KafkaHeaders[] {
   return headers.map((header) => {

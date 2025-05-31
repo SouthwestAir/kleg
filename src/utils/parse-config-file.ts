@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import YAML from 'yaml';
 
-import { LoggerHelper } from '../libs';
-import { AppConfig } from '../models/app-config.interface';
+import { LoggerHelper } from '../libs/index.js';
+import { AppConfig } from '../models/index.js';
 
 export function parseConfigFile(configFilePath: string, defaultPath: string): Partial<AppConfig> {
   const logger = LoggerHelper.getLogger();

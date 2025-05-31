@@ -1,6 +1,6 @@
 {
   "eventSource": "SelfManagedKafka",
-  "bootstrapServers": "abc-xyz.us-east-2.aws.glb.confluent.cloud:9092",
+  "bootstrapServers": "abc-xyz.us-east-1.aws.glb.confluent.cloud:9092",
   "records": {
     "topic.name-1": [
       {

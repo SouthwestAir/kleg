@@ -1,5 +1,6 @@
 {
   "name": "@southwestair/kleg",
+  "type": "module",
   "version": "1.2.7",
   "description": "Tool for generating serialized, encoded Kafka messages that can be passed into lambda to mimic an event received from an Event Source Mapping.",
   "keywords": [
@@ -9,16 +10,16 @@
     "esm",
     "kafka lambda event generator"
   ],
-  "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "dev": "tsx src/kleg.ts",
+    "start": "node dist/kleg.js",
     "build": "tsc",
-    "local-build": "rimraf ./dist && tsc && npm pack",
+    "local-build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
@@ -35,8 +36,8 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.4.0",
     "rimraf": "^6.0.1",
-    "semantic-release": "^23.0.0",
-    "ts-node": "^10.9.2",
+    "semantic-release": "^24.2.5",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.0"
   },

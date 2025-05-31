@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import { LoggerHelper } from '../libs';
-import { DecodedKafkaEvent, KafkaEvent } from '../models/kafka-event.interface';
+import { LoggerHelper } from '../libs/index.js';
+import { DecodedKafkaEvent, KafkaEvent } from '../models/index.js';
 
 export function parseDecodedFile(fileName: string): Partial<DecodedKafkaEvent> | undefined {
   const logger = LoggerHelper.getLogger();

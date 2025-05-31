@@ -1,2 +1,2 @@
-export * from './logger-helper';
-export * from './fetch-secret';
+export * from './logger-helper.js';
+export * from './fetch-secret.js';
