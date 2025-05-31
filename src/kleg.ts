@@ -40,11 +40,16 @@ const COMMANDS = {
   DEFAULT: 'default',
   GENERATE: 'generate',
   INVOKE: 'invoke',
+  HELP: 'help',
+  VERSION: 'version',
 };
 
 const program = new Command();
 
-program.version(pkg.version).description(pkg.description);
+program
+  .name('kleg')
+  .version(pkg.version, '-V, --version', 'display version number')
+  .description(pkg.description);
 
 // Define CLI options
 program
@@ -56,9 +61,11 @@ program
   .option('-l, --lambda-log-file <value>', 'Name of lambda log output file')
   .option('-b, --batch-size <value>', 'Number of copies of Kafka message(s) to insert into event');
 
-// Default command
-program.action(() => {
-  main(COMMANDS.DEFAULT as CliCommand);
+// Configure help to show global options in subcommand help
+program.configureHelp({
+  sortSubcommands: true,
+  helpWidth: 90,
+  showGlobalOptions: true,
 });
 
 // Generate command
@@ -76,6 +83,27 @@ program
   .action(() => {
     main(COMMANDS.INVOKE as CliCommand);
   });
+
+// Help command
+program
+  .command(COMMANDS.HELP)
+  .description('Display help information')
+  .action(() => {
+    program.help();
+  });
+
+// Version command
+program
+  .command(COMMANDS.VERSION)
+  .description('Display version number')
+  .action(() => {
+    console.log(pkg.version);
+  });
+
+// Default action when no command is specified
+program.action(() => {
+  main(COMMANDS.DEFAULT as CliCommand);
+});
 
 program.parse(process.argv);
 
