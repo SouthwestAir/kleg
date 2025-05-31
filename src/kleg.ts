@@ -2,11 +2,7 @@
 
 import { Command } from 'commander';
 
-import { LoggerHelper } from './libs';
-
-// Changing this to an ES6 import causes the package.json to be double-bundled in the build
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pkg = require('../package.json');
+import { LoggerHelper } from './libs/index.js';
 
 import {
   coalesceObjects,
@@ -15,8 +11,8 @@ import {
   parseDecodedFile,
   parseEncodedFile,
   writeFile,
-} from './utils';
-import { KafkaLambdaEventGenerator } from '.';
+} from './utils/index.js';
+import { KafkaLambdaEventGenerator } from './index.js';
 import {
   AppConfig,
   DecodedKafkaEvent,
@@ -24,7 +20,9 @@ import {
   InvokeCommandConfig,
   KafkaEvent,
   CliCommand,
-} from './models';
+} from './models/index.js';
+
+import pkg from '../package.json' with { type: 'json' };
 
 process.env = {
   ...process.env,
@@ -56,8 +54,7 @@ program
   .option('-d, --decoded-event-file <value>', 'Path to input file with decoded event')
   .option('-e, --encoded-event-file <value>', 'Path of file to which to write encoded event')
   .option('-l, --lambda-log-file <value>', 'Name of lambda log output file')
-  .option('-b, --batch-size <value>', 'Number of copies of Kafka message(s) to insert into event')
-  .parse(process.argv);
+  .option('-b, --batch-size <value>', 'Number of copies of Kafka message(s) to insert into event');
 
 // Default command
 program.action(() => {

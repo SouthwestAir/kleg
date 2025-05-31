@@ -1,4 +1,4 @@
-import { DecodedKafkaEvent, KafkaEvent } from './kafka-event.interface';
+import { DecodedKafkaEvent, KafkaEvent } from './kafka-event.interface.js';
 
 export interface AppConfig {
   schemaRegistryHost?: string;

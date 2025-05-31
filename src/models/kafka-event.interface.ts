@@ -1,4 +1,4 @@
-import { DecodedKafkaMessage, KafkaMessage } from './kafka-message.interface';
+import { DecodedKafkaMessage, KafkaMessage } from './kafka-message.interface.js';
 
 export interface KafkaEvent {
   eventSource: string;

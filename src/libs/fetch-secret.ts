@@ -1,7 +1,7 @@
 import { SecretsManager, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { Logger } from '@aws-lambda-powertools/logger';
 
-import { LoggerHelper } from '.';
+import { LoggerHelper } from './index.js';
 
 /**
  * Helper class for retrieving secret values from AWS SecretsManager.

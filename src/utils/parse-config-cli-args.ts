@@ -1,4 +1,4 @@
-import { AppConfig } from '../models/app-config.interface';
+import { AppConfig } from '../models/app-config.interface.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseConfigCliArgs(args: any): Partial<AppConfig> {

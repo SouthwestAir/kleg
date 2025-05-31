@@ -1,8 +1,7 @@
 import { SchemaRegistry } from '@kafkajs/confluent-schema-registry';
 import { SecretsManager } from '@aws-sdk/client-secrets-manager';
 
-import { LoggerHelper } from '../libs';
-import { FetchSecret } from '../libs/fetch-secret';
+import { FetchSecret, LoggerHelper } from '../libs/index.js';
 
 export async function getSchemaRegistryClient(
   host: string,

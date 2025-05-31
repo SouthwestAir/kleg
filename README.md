@@ -24,19 +24,19 @@ There are multiple ways to run kleg. For most projects, the recommended approach
 To install kleg into your project, run:
 
 ```bash
-npm install @SouthwestAir/kleg
+npm install @southwestair/kleg
 ```
 
 You can now invoke it manually with:
 
 ```bash
-npx kleg ...
+npx kleg <args>
 ```
 
 Or import it into a project file by adding:
 
 ```ts
-import { KafkaLambdaEventGenerator } from '@SouthwestAir/kleg';
+import { KafkaLambdaEventGenerator } from '@southwestair/kleg';
 ```
 
 ### Run With Docker
@@ -76,7 +76,7 @@ This command mounts your local `~/.aws/` directory to the container's `~/.aws` d
 To install globally, run the following command:
 
 ```bash
-npm install -g @SouthwestAir/kleg
+npm install -g @southwestair/kleg
 ```
 
 This will set up a symlink so that you can run `kleg` from anywhere. This is the easiest approach to get kleg up and running, but doesn't add it to your project, meaning other teammates will have to manually install kleg too rather than it being added automatically when other project dependencies are installed.
@@ -92,7 +92,7 @@ npm install
 This will install kleg's dependencies. Once this is complete, you can run kleg with:
 
 ```bash
-npx ts-node src/kleg.ts
+npm run dev -- <args>
 ```
 
 ## 💻 CLI Usage
@@ -179,7 +179,8 @@ Lambda:
   LogFile: <string>
 ```
 
-Check the `sample_files/config.yml` file in this repo for a working example of a config file.
+Check the [sample_files/config.yml](https://github.com/SouthwestAir/kleg/blob/main/sample_files/config.yml) file in this
+repo for a working example of a config file.
 
 ### Decoded Kafka Event File
 
@@ -203,9 +204,8 @@ The only actual requirement for the decoded event is that it matches the basic l
 
 The key and headers will also be properly encoded if they are included, but are not required.
 
-The `sample_files/full_decoded_event.json` file contains a working example of an input event for the `ent.flight.paxCounts.state.v1` topic. `sample_files/stripped_decoded_event.json` contains an event with only the essential fields.
-
-Here are some potential **future features** for `kafka-lambda-event-generator (kleg)`:
+See [sample_files/decoded-event.json](https://github.com/SouthwestAir/kleg/blob/main/sample_files/decoded-event.yml) for a
+sample message with a simplistic schema.
 
 ## Contributing
 
@@ -223,74 +223,28 @@ From: <https://docs.github.com/en/get-started/exploring-projects-on-github/contr
 
 Here are some ideas for future enhancements of this project:
 
-1. **Multi-Topic Event Generation**
+1. **Support for non-AWS Secrets Manager credentials**
 
-   - Allow kleg to generate and encode events across multiple Kafka topics simultaneously (useful for applications consuming events from different producers).
+   - Improve flexibility by allowing credentials to be passed in via command line argument or config file, rather than just an AWS Secrets Manager secret.
+     - Credentials could be passed in via command line argument or potentially via config file (though some thought should be given to security implications).
 
-2. **Plugin System for Custom Serializers**
-
-   - Enable users to define custom serialization formats beyond Avro (e.g., JSON Schema, Protobuf).
-   - Provide an easy way to add and configure new serialization methods.
-
-3. **Direct Kafka Publishing Mode**
-
-   - Instead of only generating events for Lambda invocation, allow kleg to publish the encoded event directly to a Kafka topic (would require proper authentication and producer permissions).
-
-4. **Automated Schema Detection**
+1. **Automated Schema Detection**
 
    - Auto-fetch Avro schemas from Confluent Schema Registry based on the topic name.
    - Reduce the need for manually specifying Schema IDs.
 
-5. **Cloud Provider Agnostic Mode**
+1. **Add Support for Kinesis Events**
 
-   - Extend support for **Azure Event Hubs** and **Google Pub/Sub**, making it adaptable beyond AWS Kafka.
+   - Extend kleg to also support the generation of AWS Kinesis events.
 
-6. **Event Mutation & Replay**
+1. **Plugin System for Custom Serializers**
 
-   - Allow modifying existing Kafka events with partial updates before re-encoding.
-   - Replay past events with new transformations.
+   - Enable users to define custom serialization formats beyond Avro (e.g., JSON Schema, Protobuf).
 
-7. **Debug Mode with Step-by-Step Logging**
+1. **Improve Batching Functionality**
 
-   - Introduce a verbose debugging mode that logs each transformation step (deserialization → encoding → event output).
-   - Helps diagnose encoding issues.
-
-8. **Event Chaining & Workflows**
-
-   - Chain multiple events together in a test workflow (e.g., simulate a series of events in a stream).
-   - Useful for integration testing complex event-driven systems.
-
-9. **Scheduled & Batch Event Execution**
-
-   - Introduce a scheduling feature to send batches of generated events at predefined intervals.
-   - Mimic real-world Kafka producer behavior.
-
-10. **Web-Based UI for Interactive Testing**
-
-    - Provide a simple web-based front end to configure and generate Kafka events.
-    - Users can define schemas, input data, and test directly from a browser.
-
-11. **kleg API Mode**
-
-    - Expose kleg as a REST or GraphQL API, allowing external services to request event generation and Lambda invocation.
-    - Enables better integration with CI/CD pipelines.
-
-12. **Support for Consumer Offsets & Checkpointing**
-
-    - Simulate real-world consumer behavior by allowing generated events to respect partition offsets.
-    - Useful for end-to-end testing of consumer recovery scenarios.
-
-13. **Visualization of Events & Payloads**
-
-    - A dashboard to inspect raw vs. encoded event structures side by side.
-    - Helps developers better understand transformations.
-
-14. **Terraform & Infrastructure as Code (IaC) Support**
-
-    - Provide Terraform modules for automated deployment and integration into AWS Lambda-based event-driven architectures.
-
-15. **Mobile App Integration**
-    - Develop an API that allows on-the-go event generation from mobile devices, useful for quick debugging in production environments.
+   - Introduce the ability to provide multiple different events to send, rather than just multiple copies of the same event.
+   - Consider implementing functionality to produce messages at specific time intervals, rather than immediately.
 
 ## 💻 Contributors
 

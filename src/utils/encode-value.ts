@@ -1,8 +1,8 @@
 import { SchemaRegistry } from '@kafkajs/confluent-schema-registry';
 
-import { LoggerHelper } from '../libs';
+import { LoggerHelper } from '../libs/index.js';
 
-import { GenerateCommandConfig } from '../models';
+import { GenerateCommandConfig } from '../models/index.js';
 
 export async function encodeValue(
   registry: SchemaRegistry,

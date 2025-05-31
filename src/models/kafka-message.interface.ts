@@ -1,4 +1,4 @@
-import { KafkaHeaders, DecodedKafkaHeaders } from './kafka-headers.interface';
+import { KafkaHeaders, DecodedKafkaHeaders } from './kafka-headers.interface.js';
 
 export interface KafkaMessage {
   topic: string;
