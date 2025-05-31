@@ -27,7 +27,7 @@
     "format": "prettier --write \"src/**/*.ts\""
   },
   "bin": {
-    "kleg": "./dist/kleg.js"
+    "kleg": "dist/kleg.js"
   },
   "author": "Alec Rogers",
   "license": "BSD-3-Clause",
