@@ -2,6 +2,9 @@
   "name": "@southwestair/kleg",
   "type": "module",
   "version": "1.2.8",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Tool for generating serialized, encoded Kafka messages that can be passed into lambda to mimic an event received from an Event Source Mapping.",
   "keywords": [
     "kafka",
